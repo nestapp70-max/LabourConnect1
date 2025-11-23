@@ -11,7 +11,7 @@ export const insertJobSchema = z.object({
   description: z.string().min(10),
   price: z.number().optional(),
   customerId: z.string().optional(),
-  category: z.string().optional()
+  category: z.string().optional(),
 });
 
 export const insertBidSchema = z.object({
@@ -32,5 +32,5 @@ export const insertTechnicianSchema = z.object({
   userId: z.string(),
   skills: z.array(z.string()).optional(),
   experience: z.number().optional(),
-  location: z.string().optional()
+  location: z.string().optional(),
 });
