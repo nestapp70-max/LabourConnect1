@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verifyToken } from "../middleware/auth.js";
+import verifyToken from "../middleware/auth.js";
 import User from "../models/User.js";
 import Transaction from "../models/Transaction.js";
 import ChatUnlock from "../models/ChatUnlock.js";
@@ -8,7 +8,7 @@ import Technician from "../models/Technician.js";
 const router = Router();
 
 // Get wallet balance
-router.get("/", verifyToken, async (req, res) => {
+router.get("/", verifyToken, async (req: any, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -20,15 +20,20 @@ router.get("/", verifyToken, async (req, res) => {
 });
 
 // Recharge wallet
-router.post("/recharge", verifyToken, async (req, res) => {
+router.post("/recharge", verifyToken, async (req: any, res) => {
   try {
     const { amount } = req.body;
-    if (!amount || amount <= 0) return res.status(400).json({ error: "Invalid amount" });
+
+    if (!amount || amount <= 0)
+      return res.status(400).json({ error: "Invalid amount" });
 
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    const newBalance = (parseFloat(user.walletBalance || "0") + parseFloat(amount)).toFixed(2);
+    const newBalance = (
+      parseFloat(user.walletBalance || "0") + parseFloat(amount)
+    ).toFixed(2);
+
     user.walletBalance = newBalance;
     await user.save();
 
@@ -46,4 +51,4 @@ router.post("/recharge", verifyToken, async (req, res) => {
   }
 });
 
-# Unlock contact route continues...
+export default router;
